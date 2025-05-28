@@ -1,6 +1,9 @@
 import { useEffect, useState, useMemo, useRef } from "react";
 import "./App.css";
 
+// 后端 API 基础地址
+const API_BASE = "https://classmates-backend.onrender.com";
+
 function pinyinSort(arr) {
   return arr.slice().sort((a, b) => a.name.localeCompare(b.name, 'zh-Hans-CN-u-co-pinyin'));
 }
@@ -12,7 +15,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/classmates")
+    fetch(`${API_BASE}/api/classmates`)
       .then((res) => res.json())
       .then((data) => {
         setClassmates(data);
@@ -38,7 +41,7 @@ function App() {
   const handleMessageSubmit = async (id) => {
     const content = messageInput[id];
     if (!content) return;
-    await fetch(`/api/classmates/${id}/messages`, {
+    await fetch(`${API_BASE}/api/classmates/${id}/messages`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content }),
